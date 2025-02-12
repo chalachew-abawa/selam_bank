@@ -31,7 +31,8 @@
                     <p class="account-number">Account Number: <span th:text="${account.accountNumber}">12345678</span></p>
                     <p class="balance">Balance: $<span th:text="${#numbers.formatDecimal(account.balance, 1, 2)}">0.00</span></p>
                     <div class="account-actions">
-                        <a th:href="@{/transactions(accountId=${account.id})}" class="button">View Transactions</a>
+                        <a th:href="@{/transactions/new(accountId=${account.id})}" class="button primary">New Transaction</a>
+                        <a th:href="@{/transactions(accountId=${account.id})}" class="button secondary">View Transactions</a>
                     </div>
                 </div>
             </div>
