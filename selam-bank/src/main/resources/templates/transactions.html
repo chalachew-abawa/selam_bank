@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions - Selam Bank</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="container">
+            <h1 class="logo">Selam Bank</h1>
+            <div class="nav-links">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <a th:href="@{/accounts}">Accounts</a>
+                <a th:href="@{/transactions}" class="active">Transactions</a>
+                <form th:action="@{/auth/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="button">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="transactions-section">
+            <h2>Transaction History</h2>
+            
+            <div class="action-buttons">
+                <a th:href="@{/transactions/new}" class="button primary">New Transaction</a>
+            </div>
+
+            <div class="transaction-list" th:if="${not #lists.isEmpty(transactions)}">
+                <div th:each="transaction : ${transactions}" class="transaction-item">
+                    <div class="transaction-details">
+                        <span class="account-info" th:text="${transaction.account.accountType + ' - ' + transaction.account.accountNumber}">Account</span>
+                        <span class="description" th:text="${transaction.description}">Description</span>
+                        <span class="date" th:text="${#temporals.format(transaction.timestamp, 'MM/dd/yyyy HH:mm')}">Date</span>
+                        <span class="amount" th:text="${#numbers.formatDecimal(transaction.amount, 1, 2)}"
+                              th:class="${transaction.amount >= 0 ? 'positive' : 'negative'}">Amount</span>
+                    </div>
+                </div>
+            </div>
+            <p th:if="${#lists.isEmpty(transactions)}" class="no-data">No transactions found</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Selam Bank. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html> 

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Selam Bank</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="container">
+            <h1 class="logo">Selam Bank</h1>
+            <div class="nav-links">
+                <a th:href="@{/}" class="button">Home</a>
+                <a th:href="@{/auth/login}" class="button secondary">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="auth-container">
+        <div class="auth-form">
+            <h2>Create Account</h2>
+            
+            <div th:if="${error}" class="alert alert-error" th:text="${error}">
+                Error message
+            </div>
+            <div th:if="${success}" class="alert alert-success" th:text="${success}">
+                Success message
+            </div>
+
+            <form th:action="@{/auth/register}" method="post">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                </div>
+
+                <button type="submit" class="button primary">Register</button>
+            </form>
+
+            <p class="auth-links">
+                Already have an account? <a th:href="@{/auth/login}">Login here</a>
+            </p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Selam Bank. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html> 

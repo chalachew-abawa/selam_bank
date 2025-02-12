@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Transaction - Selam Bank</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="container">
+            <h1 class="logo">Selam Bank</h1>
+            <div class="nav-links">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <a th:href="@{/accounts}">Accounts</a>
+                <a th:href="@{/transactions}" class="active">Transactions</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="auth-form">
+            <h2>New Transaction</h2>
+            
+            <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+            
+            <form th:action="@{/transactions}" method="post">
+                <div class="form-group">
+                    <label for="accountId">Select Account</label>
+                    <select id="accountId" name="accountId" required class="form-control">
+                        <option value="">Choose an account</option>
+                        <option th:each="account : ${accounts}" 
+                                th:value="${account.id}"
+                                th:text="${account.accountType + ' - ' + account.accountNumber}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="type">Transaction Type</label>
+                    <select id="type" name="type" required class="form-control">
+                        <option value="deposit">Deposit</option>
+                        <option value="withdraw">Withdraw</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" name="amount" step="0.01" min="0.01" 
+                           required class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" 
+                           required class="form-control">
+                </div>
+
+                <button type="submit" class="button primary">Submit Transaction</button>
+                <a th:href="@{/dashboard}" class="button">Cancel</a>
+            </form>
+
+            <form th:action="@{/auth/logout}" method="post" style="display: inline;">
+                <button type="submit" class="button">Logout</button>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Selam Bank. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html> 

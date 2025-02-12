@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selam Bank - Peace in Banking</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="container">
+            <h1 class="logo">Selam Bank</h1>
+            <div class="nav-links">
+                <a th:href="@{/login}" class="button">Login</a>
+                <a th:href="@{/register}" class="button secondary">Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Banking with Peace of Mind</h1>
+                    <p class="hero-subtitle">Experience the tranquility of secure and seamless banking</p>
+                    <div class="hero-buttons">
+                        <a th:href="@{/register}" class="button primary">Get Started</a>
+                        <a th:href="@{/about}" class="button secondary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2 class="section-title">Why Choose Selam Bank?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🌿</div>
+                        <h3>Peaceful Banking</h3>
+                        <p>Experience stress-free financial management with our intuitive platform</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🛡️</div>
+                        <h3>Secure Transactions</h3>
+                        <p>Bank with confidence knowing your money is protected</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💎</div>
+                        <h3>Premium Service</h3>
+                        <p>Enjoy personalized support and exclusive benefits</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Ready to Experience Peace in Banking?</h2>
+                    <p>Join thousands of satisfied customers who trust Selam Bank</p>
+                    <a th:href="@{/register}" class="button primary">Open Account Now</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>Selam Bank</h3>
+                    <p>Peace in Banking Since 2024</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#">About Us</a>
+                    <a href="#">Contact</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Selam Bank. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

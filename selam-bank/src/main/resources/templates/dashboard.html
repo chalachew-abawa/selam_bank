@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Selam Bank</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="container">
+            <h1 class="logo">Selam Bank</h1>
+            <div class="nav-links">
+                <a th:href="@{/dashboard}" class="active">Dashboard</a>
+                <a th:href="@{/accounts}">Accounts</a>
+                <a th:href="@{/transactions}">Transactions</a>
+                <form th:action="@{/auth/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="button">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="welcome-section">
+            <h2>Welcome back, <span th:text="${username}">User</span>!</h2>
+            <p class="last-login" th:if="${lastLogin}">Last login: <span th:text="${lastLogin}">2024-03-20 10:30 AM</span></p>
+        </section>
+
+        <div class="dashboard-grid">
+            <section class="quick-actions">
+                <div class="dashboard-card">
+                    <h3>Quick Actions</h3>
+                    <div class="action-buttons">
+                        <a th:href="@{/accounts/new}" class="button primary">Open New Account</a>
+                        <a th:href="@{/transactions/new}" class="button primary">Make Transfer</a>
+                        <a th:href="@{/profile}" class="button secondary">Update Profile</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="account-summary">
+                <div class="dashboard-card">
+                    <h3>Account Summary</h3>
+                    <div class="accounts-grid">
+                        <div th:each="account : ${accounts}" class="account-card">
+                            <h3 th:text="${account.accountType}">Account Type</h3>
+                            <p class="account-number">Account Number: <span th:text="${account.accountNumber}"></span></p>
+                            <p class="balance">Balance: $<span th:text="${#numbers.formatDecimal(account.balance, 1, 2)}">0.00</span></p>
+                            
+                            <div class="transaction-buttons">
+                                <button onclick="showTransactionForm('deposit', this)" class="button primary">Deposit</button>
+                                <button onclick="showTransactionForm('withdraw', this)" class="button secondary">Withdraw</button>
+                            </div>
+
+                            <div class="transaction-form" style="display: none;">
+                                <form th:action="@{/transactions}" method="post">
+                                    <input type="hidden" name="accountId" th:value="${account.id}">
+                                    <input type="hidden" name="type" value="">
+                                    
+                                    <div class="form-group">
+                                        <label for="amount">Amount</label>
+                                        <input type="number" name="amount" step="0.01" min="0.01" required class="form-control">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="description">Description</label>
+                                        <input type="text" name="description" required class="form-control">
+                                    </div>
+                                    
+                                    <button type="submit" class="button primary">Submit</button>
+                                    <button type="button" onclick="hideTransactionForm(this)" class="button">Cancel</button>
+                                </form>
+                            </div>
+
+                            <div class="recent-transactions">
+                                <h4>Recent Transactions</h4>
+                                <div th:each="transaction : ${transactions}" th:if="${transaction.account.id == account.id}" 
+                                     class="transaction-item">
+                                    <span th:text="${transaction.description}">Description</span>
+                                    <span th:text="${#temporals.format(transaction.timestamp, 'MM/dd/yyyy HH:mm')}">Date</span>
+                                    <span th:text="${#numbers.formatDecimal(transaction.amount, 1, 2)}" 
+                                          th:class="${transaction.amount >= 0 ? 'positive' : 'negative'}">Amount</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a th:href="@{/accounts}" class="button secondary">View All Accounts</a>
+                </div>
+            </section>
+
+            <section class="recent-transactions">
+                <div class="dashboard-card">
+                    <h3>Recent Transactions</h3>
+                    <div class="transaction-list" th:if="${not #lists.isEmpty(recentTransactions)}">
+                        <div th:each="transaction : ${recentTransactions}" class="transaction-item">
+                            <div class="transaction-info">
+                                <span th:text="${transaction.type}">Transfer</span>
+                                <span th:text="${#temporals.format(transaction.date, 'MM/dd/yyyy')}">03/20/2024</span>
+                            </div>
+                            <div class="transaction-amount" th:classappend="${transaction.type == 'Withdrawal' ? 'negative' : 'positive'}">
+                                <span th:text="${transaction.type == 'Withdrawal' ? '-' : '+'} + '$' + ${#numbers.formatDecimal(transaction.amount, 1, 2)}">$100.00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p th:if="${#lists.isEmpty(recentTransactions)}" class="no-data">No recent transactions</p>
+                    <a th:href="@{/transactions}" class="button secondary">View All Transactions</a>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+    function showTransactionForm(type, button) {
+        const card = button.closest('.account-card');
+        const form = card.querySelector('.transaction-form');
+        const typeInput = form.querySelector('input[name="type"]');
+        
+        typeInput.value = type;
+        form.style.display = 'block';
+        button.parentElement.style.display = 'none';
+    }
+
+    function hideTransactionForm(button) {
+        const card = button.closest('.account-card');
+        const form = card.querySelector('.transaction-form');
+        const buttons = card.querySelector('.transaction-buttons');
+        
+        form.style.display = 'none';
+        buttons.style.display = 'block';
+    }
+    </script>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Selam Bank. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

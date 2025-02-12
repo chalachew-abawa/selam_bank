@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accounts - Selam Bank</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="container">
+            <h1 class="logo">Selam Bank</h1>
+            <div class="nav-links">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <a th:href="@{/accounts}" class="active">Accounts</a>
+                <a th:href="@{/transactions}">Transactions</a>
+                <form th:action="@{/auth/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="button">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="accounts-section">
+            <h2>Your Accounts</h2>
+            
+            <div class="accounts-grid">
+                <div th:each="account : ${accounts}" class="account-card">
+                    <h3 th:text="${account.accountType}">Account Type</h3>
+                    <p class="account-number">Account Number: <span th:text="${account.accountNumber}">12345678</span></p>
+                    <p class="balance">Balance: $<span th:text="${#numbers.formatDecimal(account.balance, 1, 2)}">0.00</span></p>
+                    <div class="account-actions">
+                        <a th:href="@{/transactions(accountId=${account.id})}" class="button">View Transactions</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="new-account-section">
+                <h3>Open New Account</h3>
+                <form th:action="@{/accounts/create}" method="post" class="new-account-form">
+                    <div class="form-group">
+                        <label for="accountType">Account Type</label>
+                        <select id="accountType" name="accountType" required>
+                            <option value="SAVINGS">Savings Account</option>
+                            <option value="CHECKING">Checking Account</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="button">Open Account</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Selam Bank. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
