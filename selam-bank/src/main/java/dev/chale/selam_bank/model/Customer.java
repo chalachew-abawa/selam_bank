@@ -60,4 +60,8 @@ public class Customer {
     public List<Account> getAccounts() { return accounts; }
     public void setAccounts(List<Account> accounts) { this.accounts = accounts; }
     public LocalDateTime getCreatedAt() { return createdAt; }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 } 

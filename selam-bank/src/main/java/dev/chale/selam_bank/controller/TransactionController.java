@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 import org.springframework.ui.Model;
 import java.util.List;
 import java.util.Comparator;
-import java.util.stream.Collectors;
 import dev.chale.selam_bank.model.Account;
 import dev.chale.selam_bank.model.Transaction;
 
@@ -41,6 +40,21 @@ public class TransactionController {
         return "redirect:/dashboard";
     }
 
+    @PostMapping("/transfer")
+    public String processTransfer(@RequestParam Long fromAccountId,
+                                @RequestParam Long toAccountId,
+                                @RequestParam BigDecimal amount,
+                                @RequestParam String description,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            transactionService.transfer(fromAccountId, toAccountId, amount, description);
+            redirectAttributes.addFlashAttribute("success", "Transfer successful");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/dashboard";
+    }
+
     @GetMapping
     public String showTransactions(Model model) {
         List<Account> accounts = accountService.getCurrentUserAccounts();
@@ -50,7 +64,7 @@ public class TransactionController {
         List<Transaction> allTransactions = accounts.stream()
             .flatMap(account -> transactionService.getAccountTransactions(account.getId()).stream())
             .sorted(Comparator.comparing(Transaction::getTimestamp).reversed())
-            .collect(Collectors.toList());
+            .toList();
             
         model.addAttribute("transactions", allTransactions);
         return "transactions";

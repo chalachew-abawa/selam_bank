@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfer Money - Selam Bank</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <nav class="main-nav">
+        <div class="container">
+            <h1 class="logo">Selam Bank</h1>
+            <div class="nav-links">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <a th:href="@{/accounts}">Accounts</a>
+                <a th:href="@{/transactions}">Transactions</a>
+                <form th:action="@{/auth/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="button">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="auth-form">
+            <h2>Transfer Money</h2>
+            
+            <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+            
+            <form th:action="@{/transactions/transfer}" method="post">
+                <div class="form-group">
+                    <label for="fromAccountId">From Account</label>
+                    <select id="fromAccountId" name="fromAccountId" required class="form-control">
+                        <option value="">Select source account</option>
+                        <option th:each="account : ${accounts}" 
+                                th:value="${account.id}"
+                                th:text="${account.accountType + ' - ' + account.accountNumber + ' ($' + #numbers.formatDecimal(account.balance, 1, 2) + ')'}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="toAccountId">To Account</label>
+                    <select id="toAccountId" name="toAccountId" required class="form-control">
+                        <option value="">Select destination account</option>
+                        <option th:each="account : ${accounts}" 
+                                th:value="${account.id}"
+                                th:text="${account.accountType + ' - ' + account.accountNumber}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" name="amount" step="0.01" min="0.01" 
+                           required class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" 
+                           required class="form-control">
+                </div>
+
+                <button type="submit" class="button primary">Transfer</button>
+                <a th:href="@{/dashboard}" class="button">Cancel</a>
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Selam Bank. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html> 

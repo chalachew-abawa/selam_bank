@@ -23,7 +23,7 @@
 
     <main class="container">
         <section class="welcome-section">
-            <h2>Welcome back, <span th:text="${username}">User</span>!</h2>
+            <h2>Welcome back, <span th:text="${customer.getFullName()}">User</span>!</h2>
             <p class="last-login" th:if="${lastLogin}">Last login: <span th:text="${lastLogin}">2024-03-20 10:30 AM</span></p>
         </section>
 
